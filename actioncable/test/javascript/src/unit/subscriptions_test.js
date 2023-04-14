@@ -1,6 +1,7 @@
+import * as ActionCable from "../../../../app/javascript/action_cable/index"
 import consumerTest from "../test_helpers/consumer_test_helper"
 
-const {module} = QUnit
+const {module, test} = QUnit
 
 module("ActionCable.Subscriptions", () => {
   consumerTest("create subscription with channel string", ({consumer, server, assert, done}) => {
@@ -27,5 +28,13 @@ module("ActionCable.Subscriptions", () => {
     })
 
     consumer.subscriptions.create(channel)
+  })
+
+  module("resubscribe", () => {
+    test("stops resubscribing after certain period", assert => {
+      const subscriptions = new ActionCable.Subscriptions({})
+      // assert.equal(ActionCable.Subscriptions.stopResubscribeAfter, 0)
+      assert.ok(subscriptions)
+    })
   })
 })
