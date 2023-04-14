@@ -437,6 +437,11 @@ class Subscriptions {
   subscribe(subscription) {
     if (this.sendCommand(subscription, "subscribe")) {
       this.guarantor.guarantee(subscription);
+      if (this.constructor.stopResubscribeAfter) {
+        setTimeout((() => {
+          this.guarantor.forget(subscription);
+        }), this.stopResubscribeAfter * 1e3);
+      }
     }
   }
   confirmSubscription(identifier) {
@@ -451,6 +456,7 @@ class Subscriptions {
     });
   }
 }
+Subscriptions.stopResubscribeAfter = 0;
 
 class Consumer {
   constructor(url) {
